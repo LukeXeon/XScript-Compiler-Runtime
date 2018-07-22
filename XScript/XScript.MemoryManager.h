@@ -1,6 +1,6 @@
 #pragma once
 #include "stdafx.h"
-namespace XScript::Memory
+namespace XScript::MemoryManager
 {
 	//统一分配统一释放的内存分配器
 

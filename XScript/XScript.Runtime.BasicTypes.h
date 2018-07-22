@@ -3,7 +3,7 @@
 //内置基本类型
 namespace XScript::Runtime::BasicTypes
 {
-	using namespace std;
+	typedef void Void;
 	typedef wchar_t Character;
 	typedef bool Boolean;
 	typedef __int16 Int16;
@@ -12,9 +12,10 @@ namespace XScript::Runtime::BasicTypes
 	typedef unsigned __int16 UInt16;
 	typedef unsigned __int32 UInt32;
 	typedef unsigned __int64 UInt64;
+	typedef char Byte;
+	typedef unsigned char SByte;
 	typedef float Single;
 	typedef double Double;
-	typedef unsigned char Byte;
 	typedef const Character* String;//固定字符串
 
 	enum class BasicType//运行时的基元类型
@@ -39,7 +40,7 @@ namespace XScript::Runtime::BasicTypes
 		Null,
 		Base,
 		Unspecified,
-		XvmBasicTypeCountPlusOne
+		BasicTypeCountPlusOne
 	};
 
 	String GetBasicTypeName(BasicType type);

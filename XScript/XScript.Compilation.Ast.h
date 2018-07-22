@@ -50,8 +50,8 @@ namespace XScript::Compilation::Ast
 	typedef ElsifTag* Elsif;
 	typedef list<Elsif>* ElsifList;
 
-	class IncdecExpressionTag;
-	typedef IncdecExpressionTag* IncdecExpression;
+	class IncDecExpressionTag;
+	typedef IncDecExpressionTag* IncdecExpression;
 
 	class LogicalNotExpressionTag;
 	typedef LogicalNotExpressionTag* LogicalNotExpression;
@@ -200,7 +200,7 @@ namespace XScript::Compilation::Ast
 		And,
 	};
 
-	enum class IncdecExpressionOprator
+	enum class IncDecExpressionOprator
 	{
 		Increment,
 		Decrement
@@ -328,10 +328,10 @@ namespace XScript::Compilation::Ast
 		Expression operand;
 	};
 
-	class IncdecExpressionTag :public UnaryExpressionTag
+	class IncDecExpressionTag :public UnaryExpressionTag
 	{
 	public:
-		IncdecExpressionTag(size_t line, Expression operand, IncdecExpressionOprator op);
+		IncDecExpressionTag(size_t line, Expression operand, IncDecExpressionOprator op);
 		virtual Expression do_fix(Block current_block)override
 		{
 			return nullptr;
@@ -340,7 +340,7 @@ namespace XScript::Compilation::Ast
 		{
 			return nullptr;
 		}
-		IncdecExpressionOprator op;
+		IncDecExpressionOprator op;
 	};
 
 	class LogicalNotExpressionTag :public UnaryExpressionTag

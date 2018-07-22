@@ -4,7 +4,7 @@
 #define RawStringCompare(s1,s2) (wcscmp(s1,s2)==0)
 
 using namespace XScript::Runtime::BasicTypes;
-namespace XScript::Memory::StringTools
+namespace XScript::MemoryManager::StringManager
 {
 	class StringPool
 	{

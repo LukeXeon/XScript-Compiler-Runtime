@@ -28,7 +28,7 @@ namespace XScript::Runtime::BasicTypes
 			L"Base",
 			L"Unspecified"
 		};
-		DebugerAssert((basic_type_name.size() != (size_t)BasicType::XvmBasicTypeCountPlusOne), ("数量不正确"));
+		DebugerAssert((basic_type_name.size() != (size_t)BasicType::BasicTypeCountPlusOne), ("数量不正确"));
 		return basic_type_name[(size_t)type - 1];
 	}
 

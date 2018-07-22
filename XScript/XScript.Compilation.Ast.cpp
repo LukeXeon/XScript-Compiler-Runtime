@@ -4,15 +4,15 @@
 #include "XScript.DebugTools.h"
 #include "XScript.Compilation.YaccInterface.h"
 #include "XScript.Compilation.h"
-#include "XScript.Memory.h"
+#include "XScript.MemoryManager.h"
 #include "XScript.Runtime.Derives.h"
-#include "XScript.Memory.StringTools.h"
+#include "XScript.MemoryManager.StringManager.h"
 using namespace XScript::Compilation::Ast;
 using namespace XScript::Compilation::YaccInterface;
 using namespace XScript::Compilation;
-using namespace XScript::Memory;
+using namespace XScript::MemoryManager;
 using namespace XScript::Runtime::Derives;
-using namespace XScript::Memory::StringTools;
+using namespace XScript::MemoryManager::StringManager;
 using namespace XScript::Compilation::Errors;
 
 namespace XScript::Compilation::Ast
@@ -287,7 +287,7 @@ namespace XScript::Compilation::Ast
 		this->block = block;
 	}
 
-	IncdecExpressionTag::IncdecExpressionTag(size_t line, Expression operand, IncdecExpressionOprator op) :UnaryExpressionTag(line, operand)
+	IncDecExpressionTag::IncDecExpressionTag(size_t line, Expression operand, IncDecExpressionOprator op) :UnaryExpressionTag(line, operand)
 	{
 		this->op = op;
 	}
@@ -383,7 +383,7 @@ namespace XScript::Compilation::Ast
 		case BasicType::Double:
 		case BasicType::String:
 		{
-			this->type = xs_alloc_type_specifier(const_type);
+			this->type = CreateTypeSpecifier(const_type);
 		}break;
 		default:
 		{
@@ -438,18 +438,18 @@ namespace XScript::Compilation::Ast
 		{
 		case CastType::Int32ToDoubleCast:
 		{
-			this->type = xs_alloc_type_specifier(BasicType::Double);
+			this->type = CreateTypeSpecifier(BasicType::Double);
 		}break;
 		case CastType::DoudbleToInt32Cast:
 		{
-			this->type = xs_alloc_type_specifier(BasicType::Int32);
+			this->type = CreateTypeSpecifier(BasicType::Int32);
 
 		}break;
 		case CastType::BooleanToStringCast:
 		case CastType::Int32ToStringCast:
 		case CastType::DoubleToStringCast:
 		{
-			this->type = xs_alloc_type_specifier(BasicType::String);
+			this->type = CreateTypeSpecifier(BasicType::String);
 		}break;
 		default:
 			break;
@@ -487,15 +487,15 @@ namespace XScript::Compilation::Ast
 	{
 		if (this->left->type->is_int32() && this->right->type->is_int32())
 		{
-			this->type = xs_alloc_type_specifier(BasicType::Int32);
+			this->type = CreateTypeSpecifier(BasicType::Int32);
 		}
 		else if (this->left->type->is_double() && this->right->type->is_double())
 		{
-			this->type = xs_alloc_type_specifier(BasicType::Double);
+			this->type = CreateTypeSpecifier(BasicType::Double);
 		}
 		else if (this->left->type->is_string() && this->right->type->is_string())
 		{
-			this->type = xs_alloc_type_specifier(BasicType::String);
+			this->type = CreateTypeSpecifier(BasicType::String);
 		}
 		else
 		{
@@ -597,7 +597,7 @@ namespace XScript::Compilation::Ast
 	{
 		if (left->type->is_boolean() && right->type->is_boolean())
 		{
-			this->type = xs_alloc_type_specifier(BasicType::Boolean);
+			this->type = CreateTypeSpecifier(BasicType::Boolean);
 		}
 		else
 		{
@@ -627,7 +627,7 @@ namespace XScript::Compilation::Ast
 		{
 			CompareTypeMissMatchError(line);
 		}
-		this->type = xs_alloc_type_specifier(BasicType::Boolean);
+		this->type = CreateTypeSpecifier(BasicType::Boolean);
 		return	this;
 	}
 
@@ -637,13 +637,13 @@ namespace XScript::Compilation::Ast
 		{
 			if (cright->type->is_int32())
 			{
-				cleft->type = xs_alloc_type_specifier(BasicType::Boolean);
+				cleft->type = CreateTypeSpecifier(BasicType::Boolean);
 				cleft->data.boolean_v = value_type_compare_operator(cleft->data.int32_v, cright->data.int32_v, op);
 				return cleft;
 			}
 			else if (cright->type->is_double())
 			{
-				cleft->type = xs_alloc_type_specifier(BasicType::Boolean);
+				cleft->type = CreateTypeSpecifier(BasicType::Boolean);
 				cleft->data.boolean_v = value_type_compare_operator(cleft->data.int32_v, cright->data.double_v, op);
 				return cleft;
 			}
@@ -652,13 +652,13 @@ namespace XScript::Compilation::Ast
 		{
 			if (cright->type->is_int32())
 			{
-				cleft->type = xs_alloc_type_specifier(BasicType::Boolean);
+				cleft->type = CreateTypeSpecifier(BasicType::Boolean);
 				cleft->data.boolean_v = value_type_compare_operator(cleft->data.double_v, cright->data.int32_v, op);
 				return cleft;
 			}
 			else if (cright->type->is_double())
 			{
-				cleft->type = xs_alloc_type_specifier(BasicType::Boolean);
+				cleft->type = CreateTypeSpecifier(BasicType::Boolean);
 				cleft->data.boolean_v = value_type_compare_operator(cleft->data.double_v, cright->data.double_v, op);
 				return cleft;
 			}
@@ -673,7 +673,7 @@ namespace XScript::Compilation::Ast
 		}
 		else if (cleft->type->is_string() && cright->type->is_string())
 		{
-			cleft->type = xs_alloc_type_specifier(BasicType::Boolean);
+			cleft->type = CreateTypeSpecifier(BasicType::Boolean);
 			cleft->data.boolean_v = *(cleft->data.string_v) == *(cright->data.string_v);
 			return cleft;
 		}

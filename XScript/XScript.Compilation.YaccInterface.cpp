@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "XScript.Memory.h"
+#include "XScript.MemoryManager.h"
 #include "XScript.Compilation.Ast.h"
 #include "XScript.Compilation.Errors.h"
 #include "XScript.Compilation.YaccInterface.h"
@@ -7,7 +7,7 @@
 #include "XScript.DebugTools.h"
 using namespace XScript::Compilation;
 using namespace XScript::Compilation::Errors;
-using namespace XScript::Memory;
+using namespace XScript::MemoryManager;
 using namespace XScript::Compilation::Ast;
 
 template<typename _Ty, typename... _Types>
@@ -70,13 +70,13 @@ String XScriptCall CreateIdentifier(const char * str)
 namespace XScript::Compilation::YaccInterface
 {
 	DeclarationList XScriptCall
-		xs_chain_declaration(DeclarationList list, Declaration decl)
+		ChainDeclarationList(DeclarationList list, Declaration decl)
 	{
 		return	ChainList(list, decl);
 	}
 
 	TypeSpecifier XScriptCall
-		xs_alloc_type_specifier(BasicType type)
+		CreateTypeSpecifier(BasicType type)
 	{
 		TypeSpecifier ts = NewPointerShowLine<TypeSpecifierTag>(type, nullptr);
 		return ts;
@@ -87,7 +87,7 @@ namespace XScript::Compilation::YaccInterface
 			ParameterList parameter_list, Block block)
 	{
 		FunctionDefinition fd = NewPointerShowLine<FunctionDefinitionTag>(
-			xs_alloc_type_specifier(type),
+			CreateTypeSpecifier(type),
 			identifier,
 			parameter_list,
 			block);
@@ -95,7 +95,7 @@ namespace XScript::Compilation::YaccInterface
 	}
 
 	void XScriptCall
-		xs_function_define(BasicType type, String identifier,
+		AddFunctionDefine(BasicType type, String identifier,
 			ParameterList parameter_list, Block block)
 	{
 		Compiler com = GetCurrentCompiler();
@@ -116,59 +116,59 @@ namespace XScript::Compilation::YaccInterface
 	}
 
 	Parameter XScriptCall
-		xs_create_parameter(BasicType type, String identifier)
+		CreateParameter(BasicType type, String identifier)
 	{
-		Parameter p = NewPointerShowLine<ParameterTag>(GetCurrentLineNumber(), identifier, xs_alloc_type_specifier(type));
+		Parameter p = NewPointerShowLine<ParameterTag>(GetCurrentLineNumber(), identifier, CreateTypeSpecifier(type));
 		return p;
 	}
 
 	ParameterList XScriptCall
-		xs_create_parameter_list(Parameter pram)
+		CreateParameterList(Parameter pram)
 	{
 		return	CreateList(pram);
 	}
 
 	ParameterList XScriptCall
-		xs_chain_parameter(ParameterList list, Parameter p)
+		ChainParameter(ParameterList list, Parameter p)
 	{
 		return ChainList(list, p);
 	}
 
 	ArgumentList XScriptCall
-		xs_create_argument_list(Expression expression)
+		CreateArgumentList(Expression expression)
 	{
 		return CreateList(expression);
 	}
 
 	ArgumentList XScriptCall
-		xs_chain_argument_list(ArgumentList list, Argument alg)
+		ChainArgumentList(ArgumentList list, Argument alg)
 	{
 		return ChainList(list, alg);
 	}
 
 	StatementList XScriptCall
-		xs_create_statement_list(Statement statement)
+		CreateStatementList(Statement statement)
 	{
 		return CreateList(statement);
 	}
 
 
 	StatementList XScriptCall
-		xs_chain_statement_list(StatementList list, Statement statement)
+		ChainStatementList(StatementList list, Statement statement)
 	{
 		return ChainList(list, statement);
 	}
 
 
 	CommaExpression XScriptCall
-		xs_create_comma_expression(Expression left, Expression right)
+		CreateCommaExpression(Expression left, Expression right)
 	{
 		CommaExpression exp = NewPointerShowLine<CommaExpressionTag>(GetCurrentLineNumber(), left, right);
 		return exp;
 	}
 
 	AssignExpresion XScriptCall
-		xs_create_assign_expression(Expression left, AssignmentOperator _operator,
+		CreateAssignExpression(Expression left, AssignmentOperator _operator,
 			Expression operand)
 	{
 		AssignExpresion exp = NewPointerShowLine<AssignExpresionTag>(GetCurrentLineNumber(), left, _operator, operand);
@@ -176,7 +176,7 @@ namespace XScript::Compilation::YaccInterface
 	}
 
 	BinaryExpression XScriptCall
-		xs_create_math_binary_expression(MathBinaryExpressionOperator _operator,
+		CreateMathBinaryExpression(MathBinaryExpressionOperator _operator,
 			Expression left, Expression right)
 	{
 		switch (_operator)
@@ -197,7 +197,7 @@ namespace XScript::Compilation::YaccInterface
 	}
 
 	BinaryExpression XScriptCall
-		xs_create_compare_binary_expression(CompareBinaryExpressionOperator _operator,
+		CreateCompareBinaryExpression(CompareBinaryExpressionOperator _operator,
 			Expression left, Expression right)
 	{
 		switch (_operator)
@@ -219,7 +219,7 @@ namespace XScript::Compilation::YaccInterface
 	}
 
 	BinaryExpression XScriptCall
-		xs_create_logic_binary_expression(LogicBinaryExpressionOperator _operator,
+		CreateLogicBinaryExpression(LogicBinaryExpressionOperator _operator,
 			Expression left, Expression right)
 	{
 		switch (_operator)
@@ -237,35 +237,35 @@ namespace XScript::Compilation::YaccInterface
 	}
 
 	MinusExpression XScriptCall
-		xs_create_minus_expression(Expression operand)
+		CreateMinusExpression(Expression operand)
 	{
 		MinusExpression exp = NewPointerShowLine<MinusExpressionTag>(GetCurrentLineNumber(), operand);
 		return exp;
 	}
 
 	LogicalNotExpression XScriptCall
-		xs_create_logical_not_expression(Expression operand)
+		CreateLogicalNotExpression(Expression operand)
 	{
 		LogicalNotExpression exp = NewPointerShowLine<LogicalNotExpressionTag>(GetCurrentLineNumber(), operand);
 		return exp;
 	}
 
 	IncdecExpression XScriptCall
-		xs_create_incdec_expression(Expression operand, IncdecExpressionOprator inc_or_dec)
+		CreateIncDecExpression(Expression operand, IncDecExpressionOprator inc_or_dec)
 	{
-		IncdecExpression exp = NewPointerShowLine<IncdecExpressionTag>(GetCurrentLineNumber(), operand, inc_or_dec);
+		IncdecExpression exp = NewPointerShowLine<IncDecExpressionTag>(GetCurrentLineNumber(), operand, inc_or_dec);
 		return exp;
 	}
 
 	IdentifierExpression XScriptCall
-		xs_create_identifier_expression(String identifier)
+		CreateIdentifierExpression(String identifier)
 	{
 		IdentifierExpression exp = NewPointerShowLine<IdentifierExpressionTag>(GetCurrentLineNumber(), identifier);
 		return exp;
 	}
 
 	FunctionCallExpression XScriptCall
-		xs_create_function_call_expression(Expression function,
+		CreateFunctionCallExpression(Expression function,
 			ArgumentList argument)
 	{
 		FunctionCallExpression  exp = NewPointerShowLine<FunctionCallExpressionTag>(GetCurrentLineNumber(), function, argument);
@@ -273,7 +273,7 @@ namespace XScript::Compilation::YaccInterface
 	}
 
 	ConstantExpression XScriptCall
-		xs_create_boolean_expression(Boolean value)
+		CreateBooleanExpression(Boolean value)
 	{
 		BasicTypeData v;
 		v.boolean_v = value;
@@ -282,7 +282,7 @@ namespace XScript::Compilation::YaccInterface
 	}
 
 	ConstantExpression XScriptCall
-		xs_create_int32_expression(Int32 value)
+		CreateInt32Expression(Int32 value)
 	{
 		BasicTypeData v;
 		v.boolean_v = value;
@@ -291,7 +291,7 @@ namespace XScript::Compilation::YaccInterface
 	}
 
 	ConstantExpression XScriptCall
-		xs_create_double_expression(Double value)
+		CreateDoubleExpression(Double value)
 	{
 		BasicTypeData v;
 		v.double_v = value;
@@ -300,7 +300,7 @@ namespace XScript::Compilation::YaccInterface
 	}
 
 	ConstantExpression XScriptCall
-		xs_create_string_expression(String value)
+		CreateStringExpression(String value)
 	{
 		BasicTypeData v;
 		v.string_v = value;
@@ -309,7 +309,7 @@ namespace XScript::Compilation::YaccInterface
 	}
 
 	IfStatement XScriptCall
-		xs_create_if_statement(Expression condition,
+		CreateIfStatement(Expression condition,
 			Block then_block, ElsifList elsif_list,
 			Block else_block)
 	{
@@ -318,21 +318,21 @@ namespace XScript::Compilation::YaccInterface
 	}
 
 	ElsifList XScriptCall
-		xs_chain_elsif_list(ElsifList list, Elsif add)
+		ChainElsifList(ElsifList list, Elsif add)
 	{
 		return ChainList(list, add);
 	}
 
 
 	Elsif XScriptCall
-		xs_create_elsif(Expression expr, Block block)
+		CreateElsif(Expression expr, Block block)
 	{
 		Elsif e = NewPointerShowLine<ElsifTag>(GetCurrentLineNumber(), expr, block);
 		return e;
 	}
 
 	WhileStatement XScriptCall
-		xs_create_while_statement(String label,
+		CreateWhileStatement(String label,
 			Expression condition, Block block)
 	{
 		WhileStatement st = NewPointerShowLine<WhileStatementTag>(GetCurrentLineNumber(), label, condition, block);
@@ -343,7 +343,7 @@ namespace XScript::Compilation::YaccInterface
 	}
 
 	ForStatement XScriptCall
-		xs_create_for_statement(String label, Expression init, Expression cond,
+		CreateForStatement(String label, Expression init, Expression cond,
 			Expression post, Block block)
 	{
 		ForStatement st = NewPointerShowLine<ForStatementTag>(GetCurrentLineNumber(), label, init, cond, post, block);
@@ -353,7 +353,7 @@ namespace XScript::Compilation::YaccInterface
 	}
 
 	ForeachStatement XScriptCall
-		xs_create_foreach_statement(String label, String variable,
+		CreateForeachStatement(String label, String variable,
 			Expression collection, Block block)
 	{
 		ForeachStatement st = NewPointerShowLine<ForeachStatementTag>(GetCurrentLineNumber(), label, variable, collection, block);
@@ -363,7 +363,7 @@ namespace XScript::Compilation::YaccInterface
 	}
 
 	Block XScriptCall
-		xs_open_block()
+		OpenBlock()
 	{
 		Compiler Compilation = GetCurrentCompiler();
 		Block new_block = NewPointerShowLine<BlockTag>(GetCurrentLineNumber(), Compilation->current_block);
@@ -372,7 +372,7 @@ namespace XScript::Compilation::YaccInterface
 	}
 
 	Block XScriptCall
-		xs_close_block(Block block, StatementList statement_list)
+		CloseBlock(Block block, StatementList statement_list)
 	{
 		Compiler Compilation = GetCurrentCompiler();
 
@@ -384,35 +384,35 @@ namespace XScript::Compilation::YaccInterface
 	}
 
 	ExpressionStatement XScriptCall
-		xs_create_expression_statement(Expression expression)
+		CreateExpressionStatement(Expression expression)
 	{
 		ExpressionStatement st = NewPointerShowLine<ExpressionStatementTag>(GetCurrentLineNumber(), expression);
 		return st;
 	}
 
 	ReturnStatement XScriptCall
-		xs_create_return_statement(Expression expression)
+		CreateReturnStatement(Expression expression)
 	{
 		ReturnStatement st = NewPointerShowLine<ReturnStatementTag>(GetCurrentLineNumber(), expression);
 		return st;
 	}
 
 	BreakStatement XScriptCall
-		xs_create_break_statement(String label)
+		CreateBreakStatement(String label)
 	{
 		BreakStatement st = NewPointerShowLine<BreakStatementTag>(GetCurrentLineNumber(), label);
 		return st;
 	}
 
 	ContinueStatement XScriptCall
-		xs_create_continue_statement(String label)
+		CreateContinueStatement(String label)
 	{
 		ContinueStatement st = NewPointerShowLine<ContinueStatementTag>(GetCurrentLineNumber(), label);
 		return st;
 	}
 
 	TryStatement XScriptCall
-		xs_create_try_statement(Block try_block, String exception,
+		CreateTryStatement(Block try_block, String exception,
 			Block catch_block, Block finally_block)
 	{
 		TryStatement st = NewPointerShowLine<TryStatementTag>(GetCurrentLineNumber(), try_block, catch_block, exception, finally_block);
@@ -420,23 +420,23 @@ namespace XScript::Compilation::YaccInterface
 	}
 
 	ThrowStatement XScriptCall
-		xs_create_throw_statement(Expression expression)
+		CreateThrowStatement(Expression expression)
 	{
 		ThrowStatement st = NewPointerShowLine<ThrowStatementTag>(GetCurrentLineNumber(), expression);
 		return st;
 	}
 
 	DeclarationStatement XScriptCall
-		xs_create_declaration_statement(BasicType type, String identifier,
+		CreateDeclarationStatement(BasicType type, String identifier,
 			Expression initializer)
 	{
-		Declaration decl = NewPointerShowLine<DeclarationTag>(identifier, xs_alloc_type_specifier(type), -1);
+		Declaration decl = NewPointerShowLine<DeclarationTag>(identifier, CreateTypeSpecifier(type), -1);
 		DeclarationStatement st = NewPointerShowLine<DeclarationStatementTag>(GetCurrentLineNumber(), decl);
 		return st;
 	}
 
 	ElsifList XScriptCall
-		xs_create_elsif_lsit(Elsif elsif)
+		CreateElsifLsit(Elsif elsif)
 	{
 		return CreateList(elsif);
 	}

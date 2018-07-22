@@ -1,9 +1,9 @@
 #include "stdafx.h"
 #include "XScript.Compilation.Errors.h"
-#include "XScript.Memory.StringTools.h"
+#include "XScript.MemoryManager.StringManager.h"
 #include "XScript.Compilation.h"
 using namespace XScript::Compilation;
-using namespace XScript::Memory::StringTools;
+using namespace XScript::MemoryManager::StringManager;
 int XScriptCall yyerror(char const *str)
 {
 	size_t line = GetCurrentLineNumber();

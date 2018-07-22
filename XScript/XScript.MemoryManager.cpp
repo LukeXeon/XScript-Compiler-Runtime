@@ -1,7 +1,7 @@
 #include "stdafx.h"
-#include "XScript.Memory.h"
-using namespace XScript::Memory;
-namespace XScript::Memory
+#include "XScript.MemoryManager.h"
+using namespace XScript::MemoryManager;
+namespace XScript::MemoryManager
 {
 	Stotage::Stotage()
 	{

@@ -1,10 +1,10 @@
 #pragma once
 #include "stdafx.h"
 #include "XScript.Compilation.Ast.h"
-#include "XScript.Memory.h"
+#include "XScript.MemoryManager.h"
 #include "XScript.Compilation.h"
 using namespace XScript::Compilation::Ast;
-using namespace XScript::Memory;
+using namespace XScript::MemoryManager;
 using namespace XScript::Compilation;
 
 namespace XScript::Runtime::Derives

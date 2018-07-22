@@ -1,7 +1,7 @@
 #pragma once
 #include "stdafx.h"
 #include "XScript.Compilation.h"
-#include "XScript.Memory.StringTools.h"
+#include "XScript.MemoryManager.StringManager.h"
 namespace XScript::Compilation
 {
 	static Compiler& XScriptCall GetStaticCurrentCompilerRef()

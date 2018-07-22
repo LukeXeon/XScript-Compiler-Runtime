@@ -1,7 +1,7 @@
 #include "stdafx.h"
-#include "XScript.Memory.StringTools.h"
+#include "XScript.MemoryManager.StringManager.h"
 #pragma warning(disable:4996)
-namespace XScript::Memory::StringTools
+namespace XScript::MemoryManager::StringManager
 {
 	static inline size_t XScriptCall GetMultiByteToWideByteLength(const char *src)
 	{

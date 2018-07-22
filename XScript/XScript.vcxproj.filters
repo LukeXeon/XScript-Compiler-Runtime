@@ -24,16 +24,7 @@
     <ClInclude Include="unistd.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="yyinteface.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="y.tab.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="XScript.Compilation.Ast.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="XScript.Memory.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="XScript.Runtime.BasicTypes.h">
@@ -57,21 +48,15 @@
     <ClInclude Include="XScript.DebugTools.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="XScript.Memory.StringTools.h">
+    <ClInclude Include="XScript.MemoryManager.StringManager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="XScript.MemoryManager.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="lex.yy.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="y.tab.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="XScript.Memory.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="XScript.cpp">
@@ -83,9 +68,6 @@
     <ClCompile Include="XScript.Compilation.Errors.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="XScript.Compilation.Generate.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="XScript.Compilation.YaccInterface.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -95,10 +77,13 @@
     <ClCompile Include="XScript.Runtime.OpCodes.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="XScript.Memory.StringTools.cpp">
+    <ClCompile Include="XScript.Runtime.BasicTypes.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="XScript.Runtime.BasicTypes.cpp">
+    <ClCompile Include="XScript.MemoryManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="XScript.MemoryManager.StringManager.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
